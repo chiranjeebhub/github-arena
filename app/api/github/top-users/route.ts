@@ -1,19 +1,3 @@
-// import { NextResponse } from "next/server";
-
-// export async function GET() {
-//   const response = await fetch(
-//     "https://api.github.com/search/users?q=followers:%3E1000&sort=followers&order=desc&per_page=100",
-//     {
-//       headers: {
-//         Authorization: `token ${process.env.GITHUB_TOKEN}`,
-//       },
-//     }
-//   );
-//   const data = await response.json();
-//   console.log(data, "lkwheflwkheflkwhlef");
-//   return NextResponse.json(data);
-// }
-
 import { NextResponse } from "next/server";
 import { Ratelimit } from "@upstash/ratelimit";
 import { Redis } from "@upstash/redis";
@@ -56,7 +40,7 @@ export async function GET(request: Request) {
 
     // Fetch additional details for each user
     const detailedUsers = await Promise.all(
-      data.items.map(async (user) => {
+      data.items.map(async (user: any) => {
         const detailsResponse = await fetch(
           `https://api.github.com/users/${user.login}`,
           {
