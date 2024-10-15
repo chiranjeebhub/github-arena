@@ -39,6 +39,12 @@ type Player = {
   pullRequests: number;
   issues: number;
 };
+type GitHubUser = {
+  login: string;
+  avatar_url: string;
+  public_repos: number;
+  followers: number;
+};
 
 type SortKey = "rank" | "level" | "commits" | "pullRequests" | "issues";
 
@@ -68,8 +74,8 @@ export default function GitHubGamingArena() {
     setError(null);
     try {
       const response = await fetch("/api/github/top-users");
-      const data = await response.json();
-      const detailedUsers = data.items.map((user: any, index: number) => ({
+      const data: { items: GitHubUser[] } = await response.json();
+      const detailedUsers: Player[] = data.items.map((user, index) => ({
         rank: index + 1,
         name: user.login,
         avatar: user.avatar_url,
@@ -82,12 +88,12 @@ export default function GitHubGamingArena() {
       if (isSignedIn && userGitHubData) {
         const userRank =
           detailedUsers.findIndex(
-            (player: any) => player.name === userGitHubData.name
+            (player) => player.name === userGitHubData.name
           ) + 1;
         setUserRank(userRank > 0 ? userRank : "Not in top 100");
       }
     } catch (err) {
-      setError("Failed to fetch users. Please try again later.");
+      console.error("Failed to fetch user GitHub data", err);
     } finally {
       setLoading(false);
     }
@@ -138,19 +144,6 @@ export default function GitHubGamingArena() {
       spread: 70,
       origin: { y: 0.6 },
     });
-  };
-
-  const getMedalColor = (rank: number) => {
-    switch (rank) {
-      case 1:
-        return "bg-yellow-400";
-      case 2:
-        return "bg-gray-300";
-      case 3:
-        return "bg-amber-600";
-      default:
-        return "bg-blue-500";
-    }
   };
 
   const handleSort = (key: SortKey) => {
