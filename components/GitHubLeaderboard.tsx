@@ -6,7 +6,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import confetti from "canvas-confetti";
 import axios from "axios";
 import {
-  Trophy,
   Search,
   GitCommit,
   GitPullRequest,
@@ -30,7 +29,6 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 type Player = {
   rank: number;
@@ -46,7 +44,6 @@ type SortKey = "rank" | "level" | "commits" | "pullRequests" | "issues";
 
 export default function GitHubGamingArena() {
   const { isSignedIn, user } = useUser();
-  const [theme, setTheme] = useState("dark");
   const [searchTerm, setSearchTerm] = useState("");
   const [players, setPlayers] = useState<Player[]>([]);
   const [loading, setLoading] = useState(true);
@@ -55,13 +52,6 @@ export default function GitHubGamingArena() {
   const [userGitHubData, setUserGitHubData] = useState<Player | null>(null);
   const [sortKey, setSortKey] = useState<SortKey>("rank");
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
-
-  useEffect(() => {
-    const savedTheme = localStorage.getItem("theme");
-    if (savedTheme) {
-      setTheme(savedTheme);
-    }
-  }, []);
 
   useEffect(() => {
     fetchTopUsers();
