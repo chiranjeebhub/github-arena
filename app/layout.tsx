@@ -16,7 +16,7 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Git Arena",
+  title: "GitHub Arena",
   description: "Gamified GitHub experience for developers",
 };
 
